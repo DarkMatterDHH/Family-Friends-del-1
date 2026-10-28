@@ -5,17 +5,40 @@ export const useFavoriteStore = create(
   persist(
     (set) => ({
       favorites: [],
+
       toggleFavorite: (breed) =>
-        set((state) => ({
-          favorites: state.favorites.some(
+        set((state) => {
+          // Ensure favorites is always an array.
+          const favorites = Array.isArray(state.favorites)
+            ? state.favorites
+            : [];
+
+          const alreadyFavorite = favorites.some(
             (favorite) => String(favorite.id) === String(breed.id),
-          )
-            ? state.favorites.filter(
-                (favorite) => String(favorite.id) !== String(breed.id),
-              )
-            : [...state.favorites, breed],
-        })),
+          );
+
+          return {
+            favorites: alreadyFavorite
+              ? favorites.filter(
+                  (favorite) => String(favorite.id) !== String(breed.id),
+                )
+              : [...favorites, breed],
+          };
+        }),
     }),
-    { name: "family-friends-favorites" },
+    {
+      name: "family-friends-favorites",
+
+      // Validate persisted data when restoring the store.
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState && typeof persistedState === "object"
+          ? persistedState
+          : {}),
+        favorites: Array.isArray(persistedState?.favorites)
+          ? persistedState.favorites
+          : [],
+      }),
+    },
   ),
 );
