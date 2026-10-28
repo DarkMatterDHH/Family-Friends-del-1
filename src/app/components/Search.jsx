@@ -2,12 +2,14 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 
 export default function Search() {
   return (
-    <div
+    <form
       role="search"
-      className="mx-auto flex w-full max-w-xl items-center gap-3 px-4"
+      action="/"
+      method="get"
+      className="mx-auto flex w-full max-w-xl items-center gap-3 px-4 py-4"
     >
       <button
-        type="button"
+        type="submit"
         aria-label="Søg"
         className="flex size-12 shrink-0 items-center justify-center rounded-full bg-coral text-white hover:bg-coral/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
       >
@@ -25,11 +27,12 @@ export default function Search() {
         </label>
         <input
           id="breed-search"
+          name="query"
           type="search"
           placeholder="Søg efter hunderacer"
           className="w-full bg-transparent px-5 py-3 text-gray-800 outline-none placeholder:text-gray-400"
         />
       </div>
-    </div>
+    </form>
   );
 }
